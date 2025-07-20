@@ -89,14 +89,3 @@ const runSaveNumbersMain = () => {
   saveNumbers("Cases")
 }
 
-/**
- * ai generated to get a menu for use of the script
- */
-function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu("My Scripts")
-    .addItem("Add Em Up", "runSaveNumbersMain")
-    .addItem("Populate List", "runCollection")
-    .addToUi();
-}
-
