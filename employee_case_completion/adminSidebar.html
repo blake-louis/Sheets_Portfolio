@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <base target="_top">
+        <style>
+            .title {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                font-size: 4vb;
+                font-weight: bold;
+                margin-bottom: 3vb;
+            }
+            .link {
+                font-size: 1.6vb;
+                font-weight: bold;
+                margin-bottom: 2vb;
+            }
+            .clickable {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 80px;
+                width: 180px;
+                margin-bottom: 12px;
+            }
+            #counter {
+                display: flex;
+                flex-direction: row;
+                align-items: normal;
+                justify-content: space-evenly;
+                font-size: 12px;
+            }
+            .counterSub {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            .numberCount {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .sumthin {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+            .seperator {
+                height: 3px;
+                width: 80%;
+                border-radius: 25px;
+                background-color: black;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+    </head>
+    <body>
+        
+        <h2 class="title">
+            Dashboard 
+            <div class="seperator"></div>
+            <div class="seperator"></div>
+        </h2>
+        <div id="counter">
+            <h3 class="counterSub">
+                Splints Left<br/>
+                <div id="splintCount" class="numberCount">
+                    / 
+                </div>                
+            </h3>
+            <h3  class="counterSub">
+                Recon Left<br/>
+                <div id="reconCount" class="numberCount">
+                    / 
+                </div>
+            </h3>
+        </div>
+        <div class="sumthin">
+            <button class="clickable" onclick="getRemainingCaseCounts()">Refresh Remaining Cases</button>
+
+        <div class="seperator"></div>
+        </div>
+        <div class="sumthin">
+            <button class="clickable" onclick="getMissing()">Find Missing Cases</button>
+
+            <div class="seperator"></div>
+        </div>
+         
+
+        <script>
+            function getRemainingCaseCounts() {
+                google.script.run.withSuccessHandler(function(response) {
+                    document.getElementById("splintCount").textContent = response[0]
+                    document.getElementById("reconCount").textContent = response[1]
+                }).countRemaining()
+            }
+        </script>
+        <script>
+            function getMissing() {
+                google.script.run.withSuccessHandler(function() {
+                }).plantMissingCases()
+            }
+        </script>
+
+
+
+        <div class="link">
+        <a href="https://docs.google.com/spreadsheets/d/1yZfJYgEpOINC_seIReB5QHW8Nljrr1v_RZ3AHFUfVxk/edit?gid=0#gid=0", target="_blank">History</a>
+        </div>
+        <div class="link">
+        <a href="https://docs.google.com/spreadsheets/d/1BxtG4RQ2a26Y3Njab9ElMik0CwuznVG-a1-5bgmBcvw/edit?gid=137133780#gid=137133780", target="_blank">Shipping Today Summary</a>
+        </div>
+        <div class="link">
+        <a href="https://docs.google.com/spreadsheets/d/1i1OwACpYvKt3gYey_U2r5_6wnjoZn6gKDFZu2RUUaYo/edit?gid=1627263146#gid=1627263146", target="_blank">Daily IPS Shipments</a>
+        </div>
+        <div class="link">
+        <a href="https://docs.google.com/spreadsheets/d/10-CoTso_gopOBPB4mDumXwmRPDlpv1WuC3TMCmhriFo/edit?gid=0#gid=0", target="_blank">Daily Check</a>
+        </div>
+
+        <button onclick="google.script.host.close()">Close</button>
+    </body>
+</html>

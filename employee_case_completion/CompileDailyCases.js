@@ -178,7 +178,39 @@ const findSameCases = (inCasesDict) => {
   return inCasesDict
  }
 
+/*
+  * this will compare the current state of the list with the 
+  * two admin columns to ensure all cases are taken into account-
+  * also checks if any have been added dynamically*/
+const checkForMissedCases = () => {
+  const qaSheet = SpreadsheetApp.openById(links.test).getSheetByName('Cases')
+  const columnOptions = ['splint', 'recon']
+  let missingCases = []
+  let columnFlier = qaSheet.getRange('B2')
 
+  while (columnOptions.includes(columnFlier.getValue())) {
+
+  }
+}
+
+
+/*
+  *compile all the cases in the admin columns
+  * */
+const adminScraper = () => {
+  const todaySummary = SpreadsheetApp.openById(links.shippingTodaySummary).getSheetByName('Shipping Today')
+  let casesToShip = []
+  let columnFlier =  todaySummary.getRange('I3')
+
+  for (const x = 0; x < 2; x++) {
+    while (columnFlier.getValue().toString().length > 0) {
+      casesToShip.push(columnFlier.getValue())
+      columnFlier = columnFlier.offset(1,0)
+    }
+    columnFlier = todaySummary.getRange('K3')
+  }
+  return casesToShip
+}
 
 
 
