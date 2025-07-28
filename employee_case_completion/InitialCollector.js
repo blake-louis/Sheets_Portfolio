@@ -83,8 +83,10 @@ const saveNumbers = (inSheet) => {
   console.log(get_date)
   emplSheet.getRange("F1").setValue(get_date)
 }
-
-const runSaveNumbersMain = () => {
+/*
+  * exportable main run 
+  */
+function runSaveNumbersMain() {
   console.log('Calling saveNumbers...')
   saveNumbers("Cases")
 }

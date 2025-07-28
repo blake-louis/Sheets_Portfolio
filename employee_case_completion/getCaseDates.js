@@ -70,4 +70,30 @@ const retrieveCaseDates = () => {
   return returnCaseInfo
 }
 
+/*
+  * plugs in all of the found data. the logic is careful not
+  * to add duplicate data
+  */
+function plugInCaseDateAndDHL() {
+  const todaysCases = retrieveCaseDates();
+  const todaysKeys = Object.keys(todaysCases)
+  const qaSheet = SpreadsheetApp.openById(links.cases).getSheetByName('Cases')
+  const columnFlier = qaSheet.getRange("B3")
+  for (const rowCount = 0; rowCount < 4; rowCount++) {
+    let rowFlier = columnFlier
+    while (rowFlier.getValue().toString().length > 0) {
+      const thisCell = rowFlier.getValue()
+      if (todaysKeys.includes(thisCell) && !rowFlier.getNote().includes(todaysCases[thisCell][1])) {
+        rowFlier.setNote(`Sx: ${todaysCases[thisCell][1]}\n${rowFlier.getNote()}`)
+        if (todaysCases[thisCell][0].length > 0 && !rowFlier.offset(0,1).getValue().toString().includes(todaysCases[thisCell][0])){
+          rowFlier.offset(0,1).setValue(`${todaysCases[thisCell][0]}/ ${rowFlier.offset(0,1).getValue()}`).setFontColor(colorPallet.colorWhite).setBackground(colorPallet.colorRed).setFontWeight('bold').setFontSize(14)
+        }
+      }
+      rowFlier = rowFlier.offset(1,0)
+    }
+    columnFlier = columnFlier.offset(0, 4)
+  }
+
+}
+
 

@@ -1,4 +1,4 @@
-const runCollection = () => {
+function runCollection() {
   const collectedCases = AutoRunner9000()
   //console.log(`collected cases: ${collectedCases}`)
   saveHistory()
