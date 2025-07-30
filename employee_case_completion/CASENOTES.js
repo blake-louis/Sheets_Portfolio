@@ -11,5 +11,6 @@ const links = {
   "dailyIPSShipments": "1i1OwACpYvKt3gYey_U2r5_6wnjoZn6gKDFZu2RUUaYo",
   "myResources": "12jFcv6HdeWudpt4UG38XhraCVS7rqBBXaUvrkGh7whg",
   "history": "1yZfJYgEpOINC_seIReB5QHW8Nljrr1v_RZ3AHFUfVxk",
-  "test": "1K94_HL_jgDCIIGlVDcMcw2H1FQCDiBmJRk3uc7N7NHo"
+  "test": "1K94_HL_jgDCIIGlVDcMcw2H1FQCDiBmJRk3uc7N7NHo",
+  "credit": "10rxbR5GWZnYUkpkyw8V46ijMohC9Te1ctWE_RMRhoQ8"
 }

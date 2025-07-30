@@ -20,6 +20,12 @@ function onEdit(e) {
       findSisterCell(range, range.offset(0,-2).getValue(), false)
     }
   }
+  const caseInits = [2, 6, 10, 14]
+  if (caseInits.includes(range.getColumn())) {
+    range.setBackground(colorPallet.regularCells).setHorizontalAlignment('center')
+    range.offset(0,2).setBorder(true, true, true, true, true, true)
+
+  }
 }
 /**
  * finds the sister cell if any. 
@@ -31,7 +37,6 @@ const findSisterCell = (inRange, inCase, isComplete) => {
   //user enters from splint side
   //user cannot redo a complete case from the splint side
   if (inRange.getColumn() == 4 || inRange.getColumn() == 8) {
-    console.log('inside the if')
     let caseFinder = inRange.getSheet().getRange("J3")
     while (caseFinder.getValue().length > 0) {
       if (caseFinder.getValue().trim() === inCase.trim()) {

@@ -1,19 +1,29 @@
+const testGet = () => {
+  const spread = SpreadsheetApp.openById(links.shippingTodaySummary).getSheetByName('Shipping Today')
+  let flier = spread.getRange('K3')
+  console.log(flier.getValue())
+}
+
 /*
   *this function scrapes the two columns to ensure all cases are accounted for
   gets cases that haven't been sorted and puts them in a list for leadership review
   this function breaks if the sheet is changed
   * */
 const getCasesFromNTS = () => {
-  const shippingSummary = SpreadsheetApp.openById(links.shippingTodaySummary)
+  const shippingSummary = SpreadsheetApp.openById(links.shippingTodaySummary).getSheetByName('Shipping Today')
   let fullList = new Set() 
   var flier = shippingSummary.getRange('I3')
+  console.log(flier.getColumn())
   while (flier.getValue().toString().length > 0) {
     fullList.add(flier.getValue())
+    console.log('first', flier.getValue())
     flier = flier.offset(1,0)
   }
-flier = shippingSummary.getRange('K3')
+  flier = shippingSummary.getRange('K3')
+  console.log(flier.getColumn())
   while (flier.getValue().toString().length > 0) {
     fullList.add(flier.getValue())
+    console.log('second', flier.getValue())
     flier = flier.offset(1,0)
   }
   return fullList

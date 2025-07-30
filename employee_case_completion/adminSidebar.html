@@ -17,6 +17,7 @@
             :root {
                 --color-white: #FFFFFF;
                 --color-red: #E3051C;
+                --color-dark-red: #CB0419;
                 --color-grey: #888888;
             }
             body {
@@ -24,24 +25,46 @@
                 background-color: var(--color-white);
             }
             .logo {
-                padding-top: 80px;
+                padding-top: 20px;
             }
             .title {
+                background-color: var(--color-red);
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 font-size: 4vb;
                 font-weight: bold;
-                margin-bottom: 3vb;
+                margin-bottom: 1.5vb;
+                color: var(--color-white);
+                border-radius: 40px;
+                box-shadow: 4px 6px 0 black;
+            }
+            .link:hover {
+                z-index: 2;
+                background-color: var(--color-grey);
+                font-size: 20px;
+            }
+            a {
+                color: var(--color-white);
+                font-weight: bold;
             }
             .link {
-                font-size: 1.6vb;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 30px;
+                font-size: 16px;
                 font-weight: bold;
                 margin-bottom: 2vb;
+                background-color: var(--color-red);
+                color: var(--color-white);
+                border-radius: 80px;
+                box-shadow: 3px 4px 0 black;
             }
             .clickable:hover {
                 background-color: var(--color-red);
+                color: var(--color-white);
             }
             .clickable {
                 background-color: var(--color-white);
@@ -54,22 +77,32 @@
                 height: 80px;
                 width: 100px;
                 margin-bottom: 12px;
+                box-shadow: 4px 6px 0 var(--color-grey);
+            }
+            
+            .clickable:active {
+                background-color: var(--color-dark-red);
             }
             .small-clickable:hover {
                 background-color: var(--color-red);
+                border-color: black;
+                border-width: 2px;
             }
-            .small-clickable:active {
-                position: relative;
-                z-index: 2;
-                animation: click-small 3s alternate;
+            .small-clickable:hover + .button-descr {
+                font-weight: bolder;
+                text-decoration: underline;
             }
             .small-clickable {
                 background-color: var(--color-white);
-                border-color: var(--color-grey);
+                border-width: 2px;
                 border-bottom-color: black;
                 height: 40px;
                 width: 20%;
-                border-radius: 80px;
+                border-radius: 200px;
+                box-shadow: 1px 2px 0 black;
+            }
+            .small-clickable:active {
+                background-color: var(--color-dark-red);
             }
             .button-descr {
                 color: var(--color-white);
@@ -87,6 +120,9 @@
                 justify-content: space-evenly;
                 font-size: 12px;
             }
+            .underline {
+                text-decoration: underline;
+            }
             .counterSub {
                 display: flex;
                 flex-direction: column;
@@ -96,13 +132,19 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                color: var(--color-white);
+                background-color: var(--color-red);
+                font-size: 22px;
+                border-radius: 18px;
             }
             .sumthin {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                margin-bottom: 12px;
+                margin-bottom: 40px;
+                box-shadow: 4px 6px 0 black;
+                border-radius: 18px;
             }
             .little-sumthin {
                 border-radius: 40px;
@@ -113,6 +155,7 @@
                 justify-content: center;
                 align-items: center;
                 margin-bottom: 20px;
+                box-shadow: 3px 4px 0 black;
             }
             .seperator {
                 height: 2px;
@@ -130,19 +173,17 @@
         
         <h2 class="title">
             Dashboard 
-            <div class="seperator"></div>
-            <div class="seperator"></div>
-            <div class="seperator"></div>
         </h2>
+        <div class="seperator"></div>
         <div id="counter">
             <h3 class="counterSub">
-                Splints Left<br/>
+                <div class="underline">Splints Left</div><br/>
                 <div id="splintCount" class="numberCount">
                     / 
                 </div>                
             </h3>
             <h3  class="counterSub">
-                Recon Left<br/>
+                <div class="underline">Recon Left</div><br/>
                 <div id="reconCount" class="numberCount">
                     / 
                 </div>
@@ -150,7 +191,6 @@
         </div>
         <div class="sumthin">
             <button class="clickable" onclick="getRemainingCaseCounts()">Refresh Remaining Cases</button>
-            <div class="seperator"></div>
         </div>
         <div class="little-sumthin">
             <button class="small-clickable" onclick="getMissing()"></button>
@@ -170,6 +210,13 @@
             <button class="small-clickable" onclick="addEmUp()"></button>
             <div class="button-descr">
                 Run Case Count
+            </div>
+        </div>
+        <div class="seperator"></div>
+        <div class="little-sumthin">
+            <button class="small-clickable" onclick="giveCredit()"></button>
+            <div class="button-descr">
+                Get Done Cases
             </div>
         </div>
         <div class="seperator"></div>
@@ -207,27 +254,41 @@
             }
         </script>
         <script>
+            function giveCredit() {
+                google.script.run.withSuccessHandler(function() {
+                }).runGetCredit()
+            }
+        </script>
+        <script>
             function compileList() {
                 google.script.run.withSuccessHandler(function() {
                 }).runCollection()
             }
         </script>
+        <div class="link-title">Links</div>
 
 
-        <div class="link">
-        <a href="https://docs.google.com/spreadsheets/d/1yZfJYgEpOINC_seIReB5QHW8Nljrr1v_RZ3AHFUfVxk/edit?gid=0#gid=0", target="_blank">History</a>
-        </div>
-        <div class="link">
-        <a href="https://docs.google.com/spreadsheets/d/1BxtG4RQ2a26Y3Njab9ElMik0CwuznVG-a1-5bgmBcvw/edit?gid=137133780#gid=137133780", target="_blank">Shipping Today Summary</a>
-        </div>
-        <div class="link">
-        <a href="https://docs.google.com/spreadsheets/d/1i1OwACpYvKt3gYey_U2r5_6wnjoZn6gKDFZu2RUUaYo/edit?gid=1627263146#gid=1627263146", target="_blank">Daily IPS Shipments</a>
-        </div>
-        <div class="link">
-        <a href="https://docs.google.com/spreadsheets/d/10-CoTso_gopOBPB4mDumXwmRPDlpv1WuC3TMCmhriFo/edit?gid=0#gid=0", target="_blank">Daily Check</a>
-        </div>
+        <a href="https://docs.google.com/spreadsheets/d/1yZfJYgEpOINC_seIReB5QHW8Nljrr1v_RZ3AHFUfVxk/edit?gid=0#gid=0", target="_blank">
+            <div class="link">
+                   History
+            </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1BxtG4RQ2a26Y3Njab9ElMik0CwuznVG-a1-5bgmBcvw/edit?gid=137133780#gid=137133780", target="_blank">
+            <div class="link">
+                   Shipping Today Summary
+            </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/1i1OwACpYvKt3gYey_U2r5_6wnjoZn6gKDFZu2RUUaYo/edit?gid=1627263146#gid=1627263146", target="_blank">
+            <div class="link">
+                   Daily IPS Shipments
+            </div>
+        </a>
+        <a href="https://docs.google.com/spreadsheets/d/10-CoTso_gopOBPB4mDumXwmRPDlpv1WuC3TMCmhriFo/edit?gid=0#gid=0", target="_blank">
+            <div class="link">    
+                   Daily Check
+            </div>
+        </a>
 
-        <button onclick="google.script.host.close()">Close</button>
         <img class="logo" src="https://www.rumedacademy.com/fileadmin/_processed_/9/3/csm_KLS_Martin_Logo_735x413_4876313b28.jpg" alt="KLS Logo" width="100%"/>
     </body>
 </html>

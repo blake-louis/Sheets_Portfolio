@@ -28,9 +28,9 @@ const retrieveCaseDates = () => {
       //console.log(entireRange[row][0].toString().length)
       const dateCheck = Utilities.formatDate(entireRange[row][0], "America/New_York", "M/d")
       //console.log(dateCheck)
-      //console.log(`${monthNumber}/${dayNumber + 1}`)
+      //console.log(`${monthNumber}/${dayNumber}`)
       //console.log(dateCheck.includes(`${monthNumber}/${dayNumber + 1}`))
-      if (dateCheck.includes(`${monthNumber}/${dayNumber + 1}`)) {
+      if (dateCheck.includes(`${monthNumber}/${dayNumber}`)) {
         for (let todayRows = row + 1; todayRows < entireRange.length; todayRows++) {
           //console.log(entireRange[todayRows])
           try {
@@ -50,12 +50,6 @@ const retrieveCaseDates = () => {
             //console.log('There was an issue when gathering case information from daily ips shipment')
           }
           
-          //console.log(returnCaseInfo[entireRange[todayRows][0]])
-          //console.log(returnCaseInfo[entireRange[todayRows][1]])
-          //console.log(returnCaseInfo[entireRange[todayRows][2]])
-          //console.log(returnCaseInfo[entireRange[todayRows][3]])
-          //console.log(returnCaseInfo[entireRange[todayRows][4]])
-          //console.log(returnCaseInfo[entireRange[todayRows][5]])
         }
       } 
     }
@@ -77,23 +71,31 @@ const retrieveCaseDates = () => {
 function plugInCaseDateAndDHL() {
   const todaysCases = retrieveCaseDates();
   const todaysKeys = Object.keys(todaysCases)
+  //console.log(todaysKeys)
   const qaSheet = SpreadsheetApp.openById(links.cases).getSheetByName('Cases')
-  const columnFlier = qaSheet.getRange("B3")
-  for (const rowCount = 0; rowCount < 4; rowCount++) {
+  let columnFlier = qaSheet.getRange("B3")
+  for (let rowCount = 0; rowCount < 5; rowCount++) {
     let rowFlier = columnFlier
     while (rowFlier.getValue().toString().length > 0) {
       const thisCell = rowFlier.getValue()
       if (todaysKeys.includes(thisCell) && !rowFlier.getNote().includes(todaysCases[thisCell][1])) {
         rowFlier.setNote(`Sx: ${todaysCases[thisCell][1]}\n${rowFlier.getNote()}`)
-        if (todaysCases[thisCell][0].length > 0 && !rowFlier.offset(0,1).getValue().toString().includes(todaysCases[thisCell][0])){
+      }
+      if (todaysKeys.includes(thisCell) && todaysCases[thisCell][0].toString().length > 0 && !rowFlier.offset(0,1).getValue().toString().includes(todaysCases[thisCell][0])){
           rowFlier.offset(0,1).setValue(`${todaysCases[thisCell][0]}/ ${rowFlier.offset(0,1).getValue()}`).setFontColor(colorPallet.colorWhite).setBackground(colorPallet.colorRed).setFontWeight('bold').setFontSize(14)
-        }
       }
       rowFlier = rowFlier.offset(1,0)
     }
     columnFlier = columnFlier.offset(0, 4)
   }
 
+}
+
+const test = () => {
+  const todays = retrieveCaseDates()
+  for (const x in todays) {
+    console.log(`${x}: ${todays[x]}`)
+  }
 }
 
 

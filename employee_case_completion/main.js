@@ -13,6 +13,7 @@ const clearField = () => {
   const destSheet = SpreadsheetApp.openById(links.cases).getSheetByName("Cases")
   const blastField = destSheet.getRange("A1:R47")
   blastField.clear()
+  blastField.clearNote()
 }
 
 /**
