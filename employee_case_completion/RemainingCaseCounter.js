@@ -6,7 +6,7 @@ const countRemaining = () => {
   let columnFlier = qaSheet.getRange('B2')
   const columnOptions = ['splint', 'recon']
 
-  while (columnOptions.includes(columnFlier.getValue())) {
+  while (columnFlier.getColumn() < 16) {
     console.log(`flier: ${columnFlier.getValue()}`)
     if (columnFlier.getValue() === columnOptions[0]) {
       let rowFlier = columnFlier.offset(1,0)
@@ -21,14 +21,14 @@ const countRemaining = () => {
         rowFlier = rowFlier.offset(1,0)
 
       }
-      columnFlier = columnFlier.offset(0,4)
+      columnFlier = columnFlier.offset(0,1)
     } 
 
     if (columnFlier.getValue() === columnOptions[1]) {
       let rowFlier = columnFlier.offset(1,0)
       console.log(`initial columnFlier recon: ${columnFlier.getValue()}`)
       while (rowFlier.getValue().toString().length !== 0) {
-        console.log(`this case in recon: ${rowFlier.getValue()}`)
+        //console.log(`this case in recon: ${rowFlier.getValue()}`)
         if (rowFlier.getBackground() === colorPallet.regularCells || rowFlier.getBackground() === colorPallet.colorWhite) {
           console.log('upping reconCount')
           reconCount += 1
@@ -36,7 +36,7 @@ const countRemaining = () => {
         rowFlier = rowFlier.offset(1,0)
       }
     }
-    columnFlier = columnFlier.offset(0,4)
+    columnFlier = columnFlier.offset(0,1)
   }
   return [splintCount, reconCount]
 }

@@ -4,6 +4,7 @@ function runCollection() {
   saveHistory()
   clearField()
   layoutCases(collectedCases)
+  const thisSheet = SpreadsheetApp.openById(links.cases).getSheetByName("Cases").getRange("Q26").setValue("DONE")
 }
 
 /**

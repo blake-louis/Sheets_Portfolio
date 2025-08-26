@@ -1,6 +1,7 @@
 const testGet = () => {
-  const spread = SpreadsheetApp.openById(links.shippingTodaySummary).getSheetByName('Shipping Today')
-  let flier = spread.getRange('K3')
+  const spread = SpreadsheetApp.openById(links.cases).getSheetByName('Cases')
+  let flier = spread.getRange('F2')
+  //flier.setValue('splint').setBackground(colorPallet.headers).setFontColor(colorPallet.colorWhite)
   console.log(flier.getValue())
 }
 
@@ -13,17 +14,17 @@ const getCasesFromNTS = () => {
   const shippingSummary = SpreadsheetApp.openById(links.shippingTodaySummary).getSheetByName('Shipping Today')
   let fullList = new Set() 
   var flier = shippingSummary.getRange('I3')
-  console.log(flier.getColumn())
+  //console.log(flier.getColumn())
   while (flier.getValue().toString().length > 0) {
     fullList.add(flier.getValue())
-    console.log('first', flier.getValue())
+    //console.log('first', flier.getValue())
     flier = flier.offset(1,0)
   }
   flier = shippingSummary.getRange('K3')
-  console.log(flier.getColumn())
+  //console.log(flier.getColumn())
   while (flier.getValue().toString().length > 0) {
     fullList.add(flier.getValue())
-    console.log('second', flier.getValue())
+    //console.log('second', flier.getValue())
     flier = flier.offset(1,0)
   }
   return fullList
@@ -32,15 +33,17 @@ const getCasesFromNTS = () => {
   *extracts one copy each of cases for comparisons
   * */
 const getCurrentCases = () => {
-  const qaSheet = SpreadsheetApp.openById(links.test).getSheetByName('Cases')
+  const qaSheet = SpreadsheetApp.openById(links.cases).getSheetByName('Cases')
   //console.log(`sheetname: ${qaSheet.getName()}`)
   var returnCases = new Set()
-  let columnFlier = qaSheet.getRange('B2')
+  let columnFlier = qaSheet.getRange('A2')
   const columnOptions = ['splint', 'recon']
 
-  while (columnOptions.includes(columnFlier.getValue())) {
+  for (let x = 0; x < 17; x++) {
+    //console.log(columnFlier.getValue())
+    console.log(columnFlier.getColumn())
     console.log(`flier: ${columnFlier.getValue()}`)
-    if (columnFlier.getValue() === columnOptions[0]) {
+    if (columnFlier.getValue().toString() === columnOptions[0]) {
       let rowFlier = columnFlier.offset(1,0)
       //console.log(`initial columnFlier splint: ${columnFlier.getValue()}`)
       while (rowFlier.getValue().toString().length !== 0) {
@@ -48,10 +51,9 @@ const getCurrentCases = () => {
         returnCases.add(rowFlier.getValue().toString())
         rowFlier = rowFlier.offset(1,0)
       }
-      columnFlier = columnFlier.offset(0,4)
     } 
 
-    if (columnFlier.getValue() === columnOptions[1]) {
+    if (columnFlier.getValue().toString() === columnOptions[1]) {
       let rowFlier = columnFlier.offset(1,0)
       //console.log(`initial columnFlier recon: ${columnFlier.getValue()}`)
       while (rowFlier.getValue().toString().length !== 0) {
@@ -60,8 +62,11 @@ const getCurrentCases = () => {
         rowFlier = rowFlier.offset(1,0)
       }
     }
-    columnFlier = columnFlier.offset(0,4)
+    columnFlier = columnFlier.offset(0,1)
   }
+  //for (const x of returnCases){
+  //  console.log(x)
+  //}
   return returnCases
 }
 
@@ -69,15 +74,20 @@ const getCurrentCases = () => {
   * makes comparison to extract unsorted cases
   */
 const findMissingCases = () => {
-  console.log('first')
+  //console.log('first')
   const currCases = getCurrentCases();
-  console.log('second')
+  //console.log('second')
   const NTSCases = getCasesFromNTS();
-  console.log('third')
-
-  const unSortedCases = [...NTSCases].filter(x => !currCases.has(x))
-  console.log('fourth')
-  return unSortedCases
+  //console.log('third')
+  let unsortedCases = []
+  for (const cases of [...NTSCases]) {
+    if (![...currCases].includes(cases)) {
+      unsortedCases.push(cases)
+    }
+  }
+  //console.log(unsortedCases) 
+  //console.log('fourth')
+  return unsortedCases
 }
 
 function plantMissingCases() {
@@ -88,7 +98,7 @@ function plantMissingCases() {
   qaSheet.setColumnWidth(flier.getColumn(), 130)
   flier.setBackground(colorPallet.headers).setValue('unsorted').setFontColor(colorPallet.colorWhite).setFontSize(20).setFontWeight("bold").setHorizontalAlignment("center")
   for (let cases of missingCases) {
-    console.log(`missing case: ${cases}`)
+    //console.log(`missing case: ${cases}`)
     flier = flier.offset(1,0)
     flier.setValue(cases).setHorizontalAlignment("center").setFontColor(colorPallet.colorBlack)
   }

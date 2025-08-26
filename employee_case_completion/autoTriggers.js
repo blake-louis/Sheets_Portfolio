@@ -7,21 +7,26 @@ function onEdit(e) {
     if (range.getValue().length > 0) {
       if (sheet.getName() == "Cases" || sheet.getName() == "Test") {
         // If there's a value, highlight it
-        range.offset(0,-2).setBackground(colorPallet.completedCase);
-        console.log('should be entering')
-        findSisterCell(range, range.offset(0,-2).getValue(), true)
+        if (range.getValue().toString().toLowerCase() === "push") {
+          range.offset(0,-2).setBackground(colorPallet.colorPurple).setFontColor(colorPallet.colorWhite)
+          findSisterCell(range, range.offset(0,-2).getValue(), false, true)
+        } else {
+          range.offset(0,-2).setBackground(colorPallet.completedCase).setFontColor(colorPallet.colorBlack);
+          console.log('should be entering')
+          findSisterCell(range, range.offset(0,-2).getValue(), true, false)
+        }
       }
 
     } 
     if (range.getValue().length === 0) {
       // If cleared, reset background
-      range.offset(0, -2).setBackground(colorPallet.regularCells);
+      range.offset(0, -2).setBackground(colorPallet.regularCells).setFontColor(colorPallet.colorBlack);
       console.log('about to call function')
-      findSisterCell(range, range.offset(0,-2).getValue(), false)
+      findSisterCell(range, range.offset(0,-2).getValue(), false, false)
     }
   }
   const caseInits = [2, 6, 10, 14]
-  if (caseInits.includes(range.getColumn())) {
+  if (caseInits.includes(range.getColumn() && sheet.getName() === "Cases")) {
     range.setBackground(colorPallet.regularCells).setHorizontalAlignment('center')
     range.offset(0,2).setBorder(true, true, true, true, true, true)
 
@@ -31,7 +36,7 @@ function onEdit(e) {
  * finds the sister cell if any. 
  * ensures that the user is credited for recon if there is splint and recon, and blacks out the splint side
  */
-const findSisterCell = (inRange, inCase, isComplete) => {
+const findSisterCell = (inRange, inCase, isComplete, isPushed) => {
   console.log('reached the function')
   console.log(`range: ${inRange.getColumn()} case: ${inCase} isComplete? ${isComplete.toString()}`)
   //user enters from splint side
@@ -46,7 +51,12 @@ const findSisterCell = (inRange, inCase, isComplete) => {
             caseFinder.offset(0,2).setValue(inRange.getValue()) 
             inRange.setValue("").setBackground(colorPallet.colorBlack)
             return
-        }             
+        } 
+        switch (isPushed) {
+          case true:
+            caseFinder.setBackground(colorPallet.colorPurple).setFontColor(colorPallet.colorWhite)
+            caseFinder.offset(0,-2).setBackground(colorPallet.colorWhite)
+        }            
       }
       caseFinder = caseFinder.offset(1,0)
     }
@@ -59,7 +69,12 @@ const findSisterCell = (inRange, inCase, isComplete) => {
             caseFinder.offset(0,2).setValue(inRange.getValue()) 
             inRange.setValue("").setBackground(colorPallet.colorBlack)
             return
-        }             
+        }
+        switch (isPushed) {
+          case true:
+            caseFinder.setBackground(colorPallet.colorPurple).setFontColor(colorPallet.colorWhite)
+            caseFinder.offset(0,-2).setBackground(colorPallet.colorWhite)
+        }               
       }
       caseFinder = caseFinder.offset(1,0)
     }
@@ -77,11 +92,16 @@ const findSisterCell = (inRange, inCase, isComplete) => {
             caseFinder.offset(0,2).setValue("").setBackground(colorPallet.colorBlack)
             return
           case false:
-            console.log('reached false for case complete')
-            inRange.offset(0,-2).setBackground(colorPallet.colorWhite)
-            caseFinder.setBackground(colorPallet.colorWhite)
-            caseFinder.offset(0,2).setBackground(colorPallet.colorWhite)
-            return
+            if (isPushed === true) {
+              caseFinder.setBackground(colorPallet.colorPurple).setFontColor(colorPallet.colorWhite)
+              return
+            } else {
+              console.log('reached false for case complete')
+              inRange.offset(0,-2).setBackground(colorPallet.colorWhite).setFontColor(colorPallet.colorBlack)
+              caseFinder.setBackground(colorPallet.colorWhite).setFontColor(colorPallet.colorBlack)
+              caseFinder.offset(0,2).setBackground(colorPallet.colorWhite).setFontColor(colorPallet.colorBlack)
+              return
+            }
         }
       }
       caseFinder = caseFinder.offset(1,0)
@@ -97,11 +117,16 @@ const findSisterCell = (inRange, inCase, isComplete) => {
             caseFinder.offset(0,2).setValue("").setBackground(colorPallet.colorBlack)
             return
           case false:
-            console.log('reached false for case complete')
-            inRange.offset(0,-2).setBackground(colorPallet.colorWhite)
-            caseFinder.setBackground(colorPallet.colorWhite)
-            caseFinder.offset(0,2).setBackground(colorPallet.colorWhite)
-            return
+            if (isPushed === true) {
+              caseFinder.setBackground(colorPallet.colorPurple).setFontColor(colorPallet.colorWhite)
+              return
+            } else {
+              console.log('reached false for case complete')
+              inRange.offset(0,-2).setBackground(colorPallet.colorWhite).setFontColor(colorPallet.colorBlack)
+              caseFinder.setBackground(colorPallet.colorWhite).setFontColor(colorPallet.colorBlack)
+              caseFinder.offset(0,2).setBackground(colorPallet.colorWhite).setFontColor(colorPallet.colorBlack)
+              return
+            }
         }
       }
       caseFinder = caseFinder.offset(1,0)

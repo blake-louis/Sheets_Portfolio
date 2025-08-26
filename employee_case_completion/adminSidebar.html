@@ -26,6 +26,7 @@
             }
             .logo {
                 padding-top: 20px;
+                border-radius: 18px;
             }
             .title {
                 background-color: var(--color-red);
@@ -48,6 +49,7 @@
             a {
                 color: var(--color-white);
                 font-weight: bold;
+                width: 100%;
             }
             .link {
                 display: flex;
@@ -61,6 +63,7 @@
                 color: var(--color-white);
                 border-radius: 80px;
                 box-shadow: 3px 4px 0 black;
+                
             }
             .clickable:hover {
                 background-color: var(--color-red);
@@ -146,10 +149,23 @@
                 box-shadow: 4px 6px 0 black;
                 border-radius: 18px;
             }
+            .little-sumthin-box {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                box-shadow: 4px 6px 0 black;
+                border-radius: 18px;
+                background-color: var(--color-white);
+                margin-bottom: 20px;
+                width: 100%;
+
+            }
             .little-sumthin {
                 border-radius: 40px;
                 background-color: var(--color-grey);
                 height: 50px;
+                width: 90%;
                 display: flex;
                 flex-direction: row;
                 justify-content: center;
@@ -192,41 +208,74 @@
         <div class="sumthin">
             <button class="clickable" onclick="getRemainingCaseCounts()">Refresh Remaining Cases</button>
         </div>
-        <div class="little-sumthin">
-            <button class="small-clickable" onclick="getMissing()"></button>
-            <div class="button-descr">
-                Refresh Missing Cases
+        <div class="little-sumthin-box">
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="getMissing()"></button>
+                <div class="button-descr">
+                    Refresh Missing Cases
+                </div>
+            </div>
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="getCaseDates()"></button>
+                <div class="button-descr">
+                    Refr. Sx/ DHL
+                </div>
+            </div>
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="checkForShippedCases()"></button>
+                <div class="button-descr">
+                    Account For Shipped Cases
+                </div>
+            </div>
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="checkForAddedCases()"></button>
+                <div class="button-descr">
+                   Check for Added Cases 
+                </div>
+            </div>
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="setCaseColors()"></button>
+                <div class="button-descr">
+                    Add Case Colors
+                </div>
             </div>
         </div>
-        <div class="seperator"></div>
-        <div class="little-sumthin">
-            <button class="small-clickable" onclick="getCaseDates()"></button>
-            <div class="button-descr">
-                Refr. Sx/ DHL
+        </div>
+        <div class="little-sumthin-box">
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="addEmUp()"></button>
+                <div class="button-descr">
+                    Run Case Count
+                </div>
             </div>
         </div>
-        <div class="seperator"></div>
-        <div class="little-sumthin">
-            <button class="small-clickable" onclick="addEmUp()"></button>
-            <div class="button-descr">
-                Run Case Count
+        </div>
+        
+        <div class="little-sumthin-box">
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="giveCredit()"></button>
+                <div class="button-descr">
+                    Get Done Cases
+                </div>
             </div>
         </div>
-        <div class="seperator"></div>
-        <div class="little-sumthin">
-            <button class="small-clickable" onclick="giveCredit()"></button>
-            <div class="button-descr">
-                Get Done Cases
-            </div>
+        <div class="little-sumthin-box">
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="finalReview()"></button>
+                <div class="button-descr">
+                    Final Case Review
+                </div>
         </div>
-        <div class="seperator"></div>
-        <div class="little-sumthin">
-            <button class="small-clickable" onclick="compileList()"></button>
-            <div class="button-descr">
-                Compile Day's List
-            </div>
+        <div class="little-sumthin-box">
+            <div class="little-sumthin">
+                <button class="small-clickable" onclick="compileList()"></button>
+                <div class="button-descr">
+                    Compile Day's List
+                </div>
         </div>
-        <div class="seperator"></div>
+            
+        </div>
+        
         <script>
             function getRemainingCaseCounts() {
                 google.script.run.withSuccessHandler(function(response) {
@@ -239,6 +288,31 @@
             function getMissing() {
                 google.script.run.withSuccessHandler(function() {
                 }).plantMissingCases()
+            }
+        </script>
+        <script>
+            function checkForAddedCases() {
+                google.script.run.withSuccessHandler(function() {
+                }).runAndAddCasses()
+            }
+        </script>
+        <script>
+            function finalReview() {
+                google.script.run.withSuccessHandler(function() {
+                }).runNeedsReview()
+            }
+        </script>
+
+        <script>
+            function checkForShippedCases() {
+                google.script.run.withSuccessHandler(function() {
+                }).runShippedCheck()
+            }
+        </script>
+        <script>
+            function setCaseColors() {
+                google.script.run.withSuccessHandler(function() {
+                }).setColors()
             }
         </script>
         <script>

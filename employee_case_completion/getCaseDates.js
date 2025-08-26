@@ -1,4 +1,3 @@
-
 /*
   * get a hash of each case for the day and it's case date as the value
   */
@@ -82,7 +81,7 @@ function plugInCaseDateAndDHL() {
         rowFlier.setNote(`Sx: ${todaysCases[thisCell][1]}\n${rowFlier.getNote()}`)
       }
       if (todaysKeys.includes(thisCell) && todaysCases[thisCell][0].toString().length > 0 && !rowFlier.offset(0,1).getValue().toString().includes(todaysCases[thisCell][0])){
-          rowFlier.offset(0,1).setValue(`${todaysCases[thisCell][0]}/ ${rowFlier.offset(0,1).getValue()}`).setFontColor(colorPallet.colorWhite).setBackground(colorPallet.colorRed).setFontWeight('bold').setFontSize(14)
+          rowFlier.offset(0,1).setValue(`${todaysCases[thisCell][0]}/ ${rowFlier.offset(0,1).getValue()}`).setFontColor(colorPallet.colorWhite).setBackground(colorPallet.KLSRed).setFontWeight('bold').setFontSize(14)
       }
       rowFlier = rowFlier.offset(1,0)
     }
@@ -98,4 +97,49 @@ const test = () => {
   }
 }
 
+function setColors() {
+  const qaSheet = SpreadsheetApp.openById(links.cases).getSheetByName('Cases')
+  let flier = qaSheet.getRange('A2')
+  const categ = ['splint', 'recon']
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  let needReview = []
+  for (let x = 0; x < 20; x++) {
+    if (!categ.includes(flier.getValue())) {
+      flier = flier.offset(0,1)
+      continue
+    } else {
+      let rowFlier = flier.offset(1,0)
+      while (rowFlier.getValue().length > 0) {
+        if (rowFlier.getNote().length > 50) {
+          //console.log(Date.parse(rowFlier.getNote()))
+          var dateForm = Date.parse(rowFlier.getNote())
+          //console.log(typeof dateForm)
+          var diff = dateForm - today
+          //convert to days?
+          const daysUntil = Math.ceil(diff/(1000 * 3600 *24))
+          
+          if (daysUntil <= 7) {
+            console.log(`case: ${rowFlier.getValue()} time until: ${daysUntil}`)
+            rowFlier.offset(0,1).setBackground(colorPallet.colorRed)
+          }
+          if (daysUntil == 8 || daysUntil == 9) {
+            rowFlier.offset(0,1).setBackground(colorPallet.colorYellow)
+          } 
+          if (daysUntil >= 10) {
+            rowFlier.offset(0,1).setBackground(colorPallet.colorGreen)
+          }
+        }
+        console.log(rowFlier.getValue().toString().toLowerCase())
+        if (rowFlier.getNote().toString().toLowerCase().includes('tbd')) {
+            console.log(`${rowFlier.getValue()}: found tbd`) 
+            rowFlier.offset(0,1).setBackground(colorPallet.colorGreen)
+        }
+        rowFlier = rowFlier.offset(1,0)
+      }
+    }
+    flier = flier.offset(0,1)
+  }
+  
+}
 

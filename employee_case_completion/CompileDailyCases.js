@@ -16,26 +16,41 @@ const getThemCases = () => {
   //case_scraper traverses columns
   let case_scraper = flier
   
-  while (flier.getValue().substring(0, flier.getValue().lastIndexOf(" ")) == "Splint" || nonSplintCateg.includes(flier.getValue().substring(0, flier.getValue().lastIndexOf(" ")))) {
+  while (flier.getValue().includes("Splint")  || nonSplintCateg.includes(flier.getValue().substring(0, flier.getValue().lastIndexOf(" ")))) {
     console.log(`flier: ${flier.getValue().substring(0, flier.getValue().lastIndexOf(" "))}`)
-    if (flier.getValue().substring(0,flier.getValue().lastIndexOf(" ")) == "Splint") {
+    if (flier.getValue().includes("Splint")) {
       case_scraper = case_scraper.offset(1,0)
       while (case_scraper.getValue().length >= 1) {
-
-        cases['splint'].add(case_scraper.getValue().trim())
+        if (case_scraper.getValue() != "#N/A") {
+          console.log(`splint: ${case_scraper.getValue()}`)
+          cases['splint'].add(case_scraper.getValue().trim())
+        } 
+        
         //console.log(`this is the initial scrape: ${case_scraper.getValue()}`)
         case_scraper = case_scraper.offset(1,0)
       }
-      flier = flier.offset(0,1)
-    }
-    if (nonSplintCateg.indexOf(flier.getValue().substring(0, flier.getValue().lastIndexOf(" "))) !== -1) {
-      case_scraper = flier.offset(1,0)
-      while (case_scraper.getValue().length >= 1) {
-        cases['recon'].add(case_scraper.getValue())
-        case_scraper = case_scraper.offset(1,0)      
+      
+    } else {
+      for (const cat of nonSplintCateg) {
+        if (flier.getValue().includes(cat)) {
+          console.log(`CAT: ${flier.getValue()}`)
+          
+          case_scraper = flier.offset(1,0)
+          while (case_scraper.getValue().length >= 1 || case_scraper.getValue().length === undefined) {
+            //console.log(case_scraper.getValue())
+            console.log(`getting length: ${case_scraper.offset(1,0).getValue().length}`)
+            if (case_scraper.getValue() != "#N/A" && case_scraper.getValue().length != undefined) {
+              console.log(`case: ${case_scraper.getValue()}`)
+              cases['recon'].add(case_scraper.getValue())
+            } 
+            case_scraper = case_scraper.offset(1,0)      
+          }
+          
+        }
       }
-      flier = flier.offset(0,1)
+      
     }
+    flier = flier.offset(0,1)
   }
   //returns dict of arrays
   for (let category in cases) {

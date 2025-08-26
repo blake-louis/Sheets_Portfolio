@@ -25,7 +25,7 @@ returns a completed dictionary related to all specified employees in the format 
 const addCases = (inSheet) => {
   console.log('Gathering employee names and initials')
   let employees = getEmployeeInitials();
-  let casesSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(inSheet)
+  let casesSheet = SpreadsheetApp.openById(links.cases).getSheetByName(inSheet)
   let flier = casesSheet.getRange("A2")
 /**
  * Iterate across row 2, the title row
@@ -33,8 +33,8 @@ const addCases = (inSheet) => {
  * {initial: [name, splint, recon]}
  *                    ^       ^
  */
-  while (flier.getColumn() < 20) {
-    if (flier.getValue() == "Splints") {
+  while (flier.getColumn() < 16) {
+    if (flier.getValue() == "splint") {
       let initial_scraper = flier
       while (initial_scraper.getValue().length >= 1) {
         if (initial_scraper.offset(0,2).getValue() in employees) {
@@ -43,10 +43,11 @@ const addCases = (inSheet) => {
         initial_scraper = initial_scraper.offset(1,0)
       } 
     }
-    if (flier.getValue() == "Recon") {
+    if (flier.getValue() == "recon") {
       let initial_scraper = flier
       while (initial_scraper.getValue().length >= 1) {
         if (initial_scraper.offset(0, 2).getValue() in employees) {
+          console.log('in the addition')
           employees[initial_scraper.offset(0,2).getValue()][2] = employees[initial_scraper.offset(0,2).getValue()][2] + 1 
           
         }
